@@ -3,6 +3,7 @@ package net;
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -41,6 +42,22 @@ public class MyServer extends JFrame{
 		
 		//프레임의 북쪽에 p_north 를 부착
 		add(p_north, BorderLayout.NORTH);
+		
+		area = new JTextArea();
+		scroll = new JScrollPane(area);
+		add(scroll);
+		area.setFont(new Font("Verdana",Font.BOLD,14));
+		
+		//남쪽영역 
+		bt_start = new JButton("서버가동");
+		g = new CheckboxGroup();
+		ch_on = new Checkbox("on",g, false);
+		ch_off = new Checkbox("off",g, true);
+		p_south = new JPanel();
+		p_south.add(bt_start);
+		p_south.add(ch_on);
+		p_south.add(ch_off);
+		add(p_south, BorderLayout.SOUTH);
 		
 		//윈도우 속성 설정
 		setVisible(true);
