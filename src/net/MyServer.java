@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.ServerSocket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,6 +52,11 @@ public class MyServer extends JFrame{
 	FileWriter writer;
 	
 	String arduinoFile="E:/incubator/NetworkProject/arduino/client/client.ino";
+	
+	//네트워크에 필요한 것들...
+	ServerSocket server; //대화용X, 접속자 감지용
+	Thread serverThread; //서버 가동용 쓰레드!!
+	//얘는 메인쓰레드 대신 대기 상태에 빠져준다...
 	
 	public MyServer() {
 		t_ip=new JTextField(IPManager.getIp(),15);
@@ -96,6 +102,14 @@ public class MyServer extends JFrame{
 				saveFile();
 			}
 		});
+		
+		//가동버튼과 리스너 연결 
+		bt_start.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				serverRun();
+			}
+		});
+		
 		
 		//윈도우 속성 설정
 		setVisible(true);
@@ -169,7 +183,34 @@ public class MyServer extends JFrame{
 				}
 			}
 		}
+	}
+	
+	//서버 가동 메서드!!
+	//메인쓰레드는 절대 무한루프나, 대기상태에 빠지게 해서는
+	//안됨..이유?? 메인쓰레드는 GUI 프로그램에서 화면에
+	//보여지는 그래픽 처리나, 이벤트 감지 등을 처리하기 때문에
+	//무한루프나 대기상태에 빠지면 프로그램이 운영불가..
+	public void serverRun() {
+		//Anonymous 
+		serverThread=new Thread() {
+			public void run() {
+				try {
+					server = new ServerSocket(port);//서버가동
+					area.append("Server starting...\n");
+					
+					//접속자가 있을때까지 대기상태...
+					server.accept();
+					area.append("client detected..\n");
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		};
 		
+		// Runnable상태로 둔다
+		serverThread.start();
 		
 	}
 	

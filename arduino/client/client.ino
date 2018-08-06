@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
 
-#define AP_NAME "minssam"
-#define AP_PASSWORD "iotdeveloper"
+#define AP_NAME "Woman_AP9F1"
+#define AP_PASSWORD "abcd123456"
 #define SERVER_IP "192.168.0.54"
 #define SERVER_PORT 7777
 
@@ -20,17 +20,17 @@ void setup() {
     // We start by connecting to a WiFi network
 
     /*--------------------------------------------
-    wifi ê³µìœ ê¸° ë„¤íŠ¸ì›Œí¬ëª… / ë¹„ë°€ë²ˆí˜¸
+    wifi ê³µìœ ê¸? ?„¤?Š¸?›Œ?¬ëª? / ë¹„ë?ë²ˆí˜¸
     --------------------------------------------*/
     WiFi.mode(WIFI_STA);
     WiFiMulti.addAP(AP_NAME, AP_PASSWORD);
 
     Serial.println();
     Serial.println();
-    Serial.print("WiFi ì ‘ì†ì‹œë„ ì¤‘ì…ë‹ˆë‹¤... ");
+    Serial.print("WiFi ? ‘?†?‹œ?„ ì¤‘ì…?‹ˆ?‹¤... ");
 
     /*--------------------------------------------
-    wifi ì— ì ‘ì†ë  ë•Œê¹Œì§€ ë¬´í•œ ì—°ê²°ì„ ì‹œë„í•œë‹¤  
+    wifi ?— ? ‘?†?  ?•Œê¹Œì? ë¬´í•œ ?—°ê²°ì„ ?‹œ?„?•œ?‹¤  
     --------------------------------------------*/
     while(WiFiMulti.run() != WL_CONNECTED) {
         Serial.print(".");
@@ -38,7 +38,7 @@ void setup() {
     }
 
     /*--------------------------------------------
-    wifi ì— ì—°ê²°ë˜ë©´ ê³µìœ ê¸°ë¡œ ë¶€í„° í• ë‹¹ë°›ì€ ipë¥¼ ì¶œë ¥í•œë‹¤
+    wifi ?— ?—°ê²°ë˜ë©? ê³µìœ ê¸°ë¡œ ë¶??„° ?• ?‹¹ë°›ì? ipë¥? ì¶œë ¥?•œ?‹¤
     --------------------------------------------*/
     Serial.println("");
     Serial.println("WiFi connected");
@@ -48,7 +48,7 @@ void setup() {
     delay(500);
 
     /*--------------------------------------------
-    wifi ì— ì—°ê²°ë˜ì—ˆìœ¼ë©´, ì´ì œ ì†Œì¼“ ì„œë²„ì— ì ‘ì†ì„ ì‹œë„í•œë‹¤
+    wifi ?— ?—°ê²°ë˜?—ˆ?œ¼ë©?, ?´? œ ?†Œì¼? ?„œë²„ì— ? ‘?†?„ ?‹œ?„?•œ?‹¤
     --------------------------------------------*/
     const uint16_t port = SERVER_PORT;
     const char * host = SERVER_IP; // ip or dns
@@ -56,12 +56,12 @@ void setup() {
     Serial.print("connecting to ");
     Serial.println(host);
 
-    Serial.println("ì†Œì¼“ì„œë²„ì— ì ‘ì†ì„ ì‹œë„í•˜ê³  ìˆìŠµë‹ˆë‹¤");
+    Serial.println("?†Œì¼“ì„œë²„ì— ? ‘?†?„ ?‹œ?„?•˜ê³? ?ˆ?Šµ?‹ˆ?‹¤");
     while(!client.connect(host, port)){
         Serial.println(".");
         delay(1000);
     }
-    Serial.println("ì†Œì¼“ì„œë²„ì— ì ‘ì†í•˜ì˜€ìŠµë‹ˆë‹¤");    
+    Serial.println("?†Œì¼“ì„œë²„ì— ? ‘?†?•˜???Šµ?‹ˆ?‹¤");    
     delay(1000);
 }
 
@@ -69,20 +69,20 @@ void loop() {
     ESP.wdtFeed();
     
     /*--------------------------------------------
-     ì„œë²„ë¡œë¶€í„° í•œì¤„ ì½ì–´ì˜¤ê¸°(read back one line from server)
+     ?„œë²„ë¡œë¶??„° ?•œì¤? ?½?–´?˜¤ê¸?(read back one line from server)
     --------------------------------------------*/
     String msg = client.readStringUntil('\n');
     
-    //Serial.println("ì„œë²„ì—ì„œ ë³´ë‚´ì˜¨ ë©”ì„¸ì§€ëŠ”");    
+    //Serial.println("?„œë²„ì—?„œ ë³´ë‚´?˜¨ ë©”ì„¸ì§??Š”");    
     Serial.println(msg);
 
-    //D5ì— ì „ê¸° ì¶œë ¥í•˜ê¸°
+    //D5?— ? „ê¸? ì¶œë ¥?•˜ê¸?
     if(msg.equals("on")){
       digitalWrite(D5 , HIGH);      
-      Serial.println("LED ì¼­ë‹ˆë‹¤");
+      Serial.println("LED ì¼??‹ˆ?‹¤");
     }else if(msg.equals("off")){
       digitalWrite(D5 , LOW);
-      Serial.println("LED ë•ë‹ˆë‹¤");
+      Serial.println("LED ?•?‹ˆ?‹¤");
     }
     
     
