@@ -28,9 +28,15 @@ public class MyServer extends JFrame{
 	Checkbox ch_on, ch_off;
 	JPanel p_south;
 	
+	//포트설정 
+	//자바의 기본 자료형 마다 1:1 대응 클래스가 지원되는데
+	//이 클래스들을 가리켜 Wrapper 클래스라 부른다..	
+	//주로 기본자료형에서 --> 객체자료형으로 변환 
+	int port=7777; 
+	
 	public MyServer() {
-		t_ip=new JTextField(15);
-		t_port = new JTextField(5);
+		t_ip=new JTextField(IPManager.getIp(),15);
+		t_port = new JTextField(Integer.toString(port),5);
 		bt_open = new JButton("스케치 열기");
 		bt_save = new JButton("스케치 저장");
 		p_north = new JPanel();
