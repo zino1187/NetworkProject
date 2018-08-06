@@ -6,13 +6,17 @@ import java.awt.CheckboxGroup;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,7 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class MyServer extends JFrame{
+public class MyServer extends JFrame implements ItemListener{
 	//북쪽 관련 객체들...
 	JTextField t_ip, t_port;
 	JButton bt_open, bt_save;
@@ -58,6 +62,9 @@ public class MyServer extends JFrame{
 	Thread serverThread; //서버 가동용 쓰레드!!
 	//얘는 메인쓰레드 대신 대기 상태에 빠져준다...
 	
+	//대화용 스트림 
+	BufferedWriter bw;
+	
 	public MyServer() {
 		t_ip=new JTextField(IPManager.getIp(),15);
 		t_port = new JTextField(Integer.toString(port),5);
@@ -88,6 +95,10 @@ public class MyServer extends JFrame{
 		p_south.add(ch_on);
 		p_south.add(ch_off);
 		add(p_south, BorderLayout.SOUTH);
+		
+		//체크박스와 리스너와의 연결 
+		ch_on.addItemListener(this);
+		ch_off.addItemListener(this);
 		
 		//이벤스 소스와 리스너와의 연결!!
 		bt_open.addActionListener(new ActionListener() {
@@ -199,8 +210,14 @@ public class MyServer extends JFrame{
 					area.append("Server starting...\n");
 					
 					//접속자가 있을때까지 대기상태...
-					server.accept();
+					Socket client=server.accept();
 					area.append("client detected..\n");
+					
+					//생성된 소켓을 이용하여 클라이언트와 대화
+					//주고 받기!!
+					bw=new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+					
+					
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -217,6 +234,28 @@ public class MyServer extends JFrame{
 	public static void main(String[] args) {
 		new MyServer();
 
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		Object obj=e.getSource();
+		if(obj==ch_on) {
+			try {
+				bw.write("on\n");
+				bw.flush();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}else if(obj==ch_off) {
+			try {
+				bw.write("off\n");
+				bw.flush();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		
 	}
 
 
